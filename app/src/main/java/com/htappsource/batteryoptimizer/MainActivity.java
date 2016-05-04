@@ -25,6 +25,8 @@ import android.widget.Toast;
 import android.widget.Button;
 import android.view.View.OnClickListener;
 import android.view.View;
+import android.net.Uri;
+import android.content.ActivityNotFoundException;
 
 public class MainActivity extends Activity {
 
@@ -47,7 +49,7 @@ public class MainActivity extends Activity {
             updateListData();
         }
     };
-    Button button;
+    Button killButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -200,6 +202,30 @@ public class MainActivity extends Activity {
         runningAppsList.add(RunningApps[3]);
 
         listDataChild2.put(listDataHeader2.get(0), runningAppsList);
+
+        killButton = (Button) findViewById(R.id.btn_kill);
+        killButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Perform action on click
+                String packageName = "com.facebook.katana";
+
+                try {
+                    //Open the specific App Info page:
+                    Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    intent.setData(Uri.parse("package:" + packageName));
+                    startActivity(intent);
+
+                } catch ( ActivityNotFoundException e ) {
+                    //e.printStackTrace();
+
+                    //Open the generic Apps page:
+                    Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS);
+                    startActivity(intent);
+
+                }
+            }
+        });
+
 
         listAdapter.notifyDataSetChanged();
 
