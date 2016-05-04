@@ -29,9 +29,13 @@ import android.view.View;
 public class MainActivity extends Activity {
 
     ExpandableListAdapter listAdapter;
+    ExpandableListAdapterWithButton listAdaptorButton; //for running apps
     ExpandableListView expListView;
-    List<String> listDataHeader;
+    ExpandableListView expListView2; //for running apps
+    List<String> listDataHeader; //for battery level and charge type
+    List<String> listDataHeader2; //for list of running apps
     HashMap<String, List<String>> listDataChild;
+    HashMap<String, List<String>> listDataChild2; //childlist for running apps
     private String[] strText = new String[] {"Battery Level", "Status", "Running Apps"};
     private String[] RunningApps;
     private int Voltage = 0;
@@ -57,21 +61,38 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         // get the listview
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
+        expListView2 = (ExpandableListView) findViewById(R.id.lvExp2);
 
         listDataHeader = new ArrayList<String>();
+        listDataHeader2 = new ArrayList<String>();
         listDataChild = new HashMap<String, List<String>>();
+        listDataChild2 = new HashMap<String, List<String>>();
         // Adding child data
         listDataHeader.add(strText[0]);
         listDataHeader.add(strText[1]);
-        listDataHeader.add(strText[2]);
+        listDataHeader2.add(strText[2]);
 
         listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
+        listAdaptorButton = new ExpandableListAdapterWithButton(this, listDataHeader2, listDataChild2);
 
         // setting list adapter
         expListView.setAdapter(listAdapter);
+        expListView2.setAdapter(listAdaptorButton);
 
         // Listview Group click listener
         expListView.setOnGroupClickListener(new OnGroupClickListener() {
+
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v,
+                                        int groupPosition, long id) {
+                // Toast.makeText(getApplicationContext(),
+                // "Group Clicked " + listDataHeader.get(groupPosition),
+                // Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
+
+        expListView2.setOnGroupClickListener(new OnGroupClickListener() {
 
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v,
@@ -93,6 +114,15 @@ public class MainActivity extends Activity {
                         Toast.LENGTH_SHORT).show();
             }
         });
+        expListView2.setOnGroupExpandListener(new OnGroupExpandListener() {
+
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                Toast.makeText(getApplicationContext(),
+                        listDataHeader2.get(groupPosition) + " Expanded",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
 
         // Listview Group collasped listener
         expListView.setOnGroupCollapseListener(new OnGroupCollapseListener() {
@@ -101,6 +131,16 @@ public class MainActivity extends Activity {
             public void onGroupCollapse(int groupPosition) {
                 Toast.makeText(getApplicationContext(),
                         listDataHeader.get(groupPosition) + " Collapsed",
+                        Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        expListView2.setOnGroupCollapseListener(new OnGroupCollapseListener() {
+
+            @Override
+            public void onGroupCollapse(int groupPosition) {
+                Toast.makeText(getApplicationContext(),
+                        listDataHeader2.get(groupPosition) + " Collapsed",
                         Toast.LENGTH_SHORT).show();
 
             }
@@ -124,6 +164,23 @@ public class MainActivity extends Activity {
                 return false;
             }
         });
+        expListView2.setOnChildClickListener(new OnChildClickListener() {
+
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v,
+                                        int groupPosition, int childPosition, long id) {
+                // TODO Auto-generated method stub
+                Toast.makeText(
+                        getApplicationContext(),
+                        listDataHeader2.get(groupPosition)
+                                + " : "
+                                + listDataChild2.get(
+                                listDataHeader2.get(groupPosition)).get(
+                                childPosition), Toast.LENGTH_SHORT)
+                        .show();
+                return false;
+            }
+        });
     }
 
     /*
@@ -131,9 +188,10 @@ public class MainActivity extends Activity {
      */
     private void updateListData() {
         listDataHeader.clear();
+        listDataHeader2.clear();
         listDataHeader.add(strText[0]);
         listDataHeader.add(strText[1]);
-        listDataHeader.add(strText[2]);
+        listDataHeader2.add(strText[2]);
 
         List<String> runningAppsList = new ArrayList<String>();
         runningAppsList.add(RunningApps[0]);
@@ -141,7 +199,7 @@ public class MainActivity extends Activity {
         runningAppsList.add(RunningApps[2]);
         runningAppsList.add(RunningApps[3]);
 
-        listDataChild.put(listDataHeader.get(2), runningAppsList);
+        listDataChild2.put(listDataHeader2.get(0), runningAppsList);
 
         listAdapter.notifyDataSetChanged();
 
