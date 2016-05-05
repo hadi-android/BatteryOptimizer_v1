@@ -1,12 +1,17 @@
 package com.htappsource.batteryoptimizer;
 
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
+
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +20,6 @@ public class ExpandableListAdapterWithButton extends BaseExpandableListAdapter {
 
     private Context _context;
     private List<String> _listDataHeader; // header titles
-    // child data in format of header title, child title
     private HashMap<String, List<String>> _listDataChild;
 
     public ExpandableListAdapterWithButton(Context context, List<String> listDataHeader,

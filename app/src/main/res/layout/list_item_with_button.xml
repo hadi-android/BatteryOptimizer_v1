@@ -15,8 +15,10 @@
         android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft" />
     <Button
         android:id="@+id/btn_kill"
+        android:text="Info"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:layout_toRightOf="@+id/lblListItem"/>
+        android:layout_toRightOf="@id/lblListItemBtn"
+        android:onClick="launchAppInfo"/>
 
 </LinearLayout>

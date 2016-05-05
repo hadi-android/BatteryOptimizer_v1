@@ -39,7 +39,7 @@ public class MainActivity extends Activity {
     HashMap<String, List<String>> listDataChild;
     HashMap<String, List<String>> listDataChild2; //childlist for running apps
     private String[] strText = new String[] {"Battery Level", "Status", "Running Apps"};
-    private String[] RunningApps;
+    private String[] RunningApps = new String[5];
     private int Voltage = 0;
     private double Power = 0;
     private boolean trun = true;
@@ -49,7 +49,7 @@ public class MainActivity extends Activity {
             updateListData();
         }
     };
-    Button killButton;
+    String[] processNames;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +62,10 @@ public class MainActivity extends Activity {
     private void initializeListData(){
         setContentView(R.layout.activity_main);
         // get the listview
+        checkRunningApps(); // get list of running apps
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
         expListView2 = (ExpandableListView) findViewById(R.id.lvExp2);
+        //killButton = (Button) findViewById(R.id.btn_kill);
 
         listDataHeader = new ArrayList<String>();
         listDataHeader2 = new ArrayList<String>();
@@ -200,32 +202,9 @@ public class MainActivity extends Activity {
         runningAppsList.add(RunningApps[1]);
         runningAppsList.add(RunningApps[2]);
         runningAppsList.add(RunningApps[3]);
+        runningAppsList.add(RunningApps[4]);
 
         listDataChild2.put(listDataHeader2.get(0), runningAppsList);
-
-        killButton = (Button) findViewById(R.id.btn_kill);
-        killButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Perform action on click
-                String packageName = "com.facebook.katana";
-
-                try {
-                    //Open the specific App Info page:
-                    Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                    intent.setData(Uri.parse("package:" + packageName));
-                    startActivity(intent);
-
-                } catch ( ActivityNotFoundException e ) {
-                    //e.printStackTrace();
-
-                    //Open the generic Apps page:
-                    Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS);
-                    startActivity(intent);
-
-                }
-            }
-        });
-
 
         listAdapter.notifyDataSetChanged();
 
@@ -288,8 +267,6 @@ public class MainActivity extends Activity {
         public void run () {
             do {
                 batteryLevelUpdate();
-                checkRunningApps();
-
                 myHandler.post(myRun);
 
                 try {
@@ -345,7 +322,7 @@ public class MainActivity extends Activity {
         ActivityManager actvityManager = (ActivityManager)
                 this.getSystemService( ACTIVITY_SERVICE );
         List<ActivityManager.RunningAppProcessInfo> procInfos = actvityManager.getRunningAppProcesses();
-        String[] processNames = new String[procInfos.size()];
+        processNames = new String[procInfos.size()];
         //MemoryInfo[] memInfo = new MemoryInfo[procInfos.size()];
         int[] processid = new int[procInfos.size()];
 
@@ -380,11 +357,34 @@ public class MainActivity extends Activity {
                 }
             }
         }
-        RunningApps = processNames;
+        //RunningApps = processNames;
         RunningApps[0] = processNames[0] + " (" + Integer.toString(usage[0]/1000) + "MB)";
         RunningApps[1] = processNames[1] + " (" + Integer.toString(usage[1]/1000) + "MB)";
         RunningApps[2] = processNames[2] + " (" + Integer.toString(usage[2]/1000) + "MB)";
         RunningApps[3] = processNames[3] + " (" + Integer.toString(usage[3]/1000) + "MB)";
+        RunningApps[4] = processNames[4] + " (" + Integer.toString(usage[4]/1000) + "MB)";
+
+    }
+    //launch application info when "info" button is clicked
+    public void launchAppInfo(View view) {
+
+        final int position = expListView2.getPositionForView((View) view.getParent());
+        String packageName = processNames[position-1];
+        try {
+            //Open the specific App Info page:
+            Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            intent.setData(Uri.parse("package:" + packageName));
+            startActivity(intent);
+
+        } catch ( ActivityNotFoundException e ) {
+            //e.printStackTrace();
+
+            //Open the generic Apps page:
+            Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS);
+            startActivity(intent);
+
+        }
+
     }
 
 
