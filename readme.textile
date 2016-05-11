@@ -1,2 +1,21 @@
-Hello world
-Bye world
+h1. Battery Optimizer
+
+App created and maintained by Hadi Tadayyon (hadi.tadayyon@gmail.com)
+
+This repository contains the project source code for a battery optimization app that shows battery level, charge status, and most memory consuming apps that are running in the background.
+
+Please report bugs/errors and feel free to provide feedback.
+
+
+
+h2. How to install the app
+
+This app has been written with Android Studio v2.1
+
+To install the app: 
+1. download the project
+2. In Android Studio, Go to File->new->import project and locate the project folder
+3. AS should automatically detect gradle files and dependencies and build the project.
+4. When guide build is finished, click Run and enjoy!
+
+
