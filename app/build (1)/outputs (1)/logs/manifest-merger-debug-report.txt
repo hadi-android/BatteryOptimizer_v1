@@ -1,0 +1,79 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml:2:1-36:12
+	package
+		ADDED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml:3:5-47
+		INJECTED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml
+	android:versionName
+		ADDED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml:5:5-30
+		INJECTED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml
+	android:versionCode
+		ADDED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml:4:5-28
+		INJECTED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml:2:11-69
+uses-permission#android.permission.CHANGE_WIFI_STATE
+ADDED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml:7:5-76
+	android:name
+		ADDED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml:7:22-73
+uses-sdk
+ADDED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml:9:5-11:41
+MERGED from [com.android.support:appcompat-v7:21.0.3] C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\21.0.3\AndroidManifest.xml:15:5-42
+MERGED from [com.android.support:support-v4:21.0.3] C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\AndroidManifest.xml:15:5-42
+	android:targetSdkVersion
+		ADDED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml:11:9-38
+		INJECTED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		ADDED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml:10:9-34
+		INJECTED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml
+application
+ADDED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml:13:5-34:19
+MERGED from [com.android.support:appcompat-v7:21.0.3] C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\21.0.3\AndroidManifest.xml:16:5-19
+MERGED from [com.android.support:support-v4:21.0.3] C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\AndroidManifest.xml:16:5-19
+	android:label
+		ADDED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml:16:9-42
+	android:allowBackup
+		ADDED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml:14:9-35
+	android:icon
+		ADDED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml:15:9-45
+	android:theme
+		ADDED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml:17:9-40
+activity#com.htappsource.batteryoptimizer.MainActivity
+ADDED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml:18:9-25:20
+	android:label
+		ADDED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml:20:13-46
+	android:name
+		ADDED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml:19:13-73
+intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
+ADDED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml:21:13-24:29
+action#android.intent.action.MAIN
+ADDED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml:22:17-69
+	android:name
+		ADDED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml:22:25-66
+category#android.intent.category.LAUNCHER
+ADDED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml:23:17-77
+	android:name
+		ADDED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml:23:27-74
+activity#com.htappsource.batteryoptimizer.PowerSaver
+ADDED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml:26:9-32:20
+	android:name
+		ADDED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml:27:13-39
+intent-filter#android.intent.category.DEFAULT+com.htappsource.batteryoptimizer.PowerSaver
+ADDED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml:28:13-31:29
+action#com.htappsource.batteryoptimizer.PowerSaver
+ADDED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml:29:17-86
+	android:name
+		ADDED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml:29:25-83
+category#android.intent.category.DEFAULT
+ADDED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml:30:17-76
+	android:name
+		ADDED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml:30:27-73
+service#com.htappsource.batteryoptimizer.MyIntentService
+ADDED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml:33:9-51
+	android:name
+		ADDED from C:\Users\Hadi\Google Drive\AndroidApps\BatteryOptimizer_backup\BatteryOptimizer_v1\app\src\main\AndroidManifest.xml:33:18-49

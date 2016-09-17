@@ -9,11 +9,15 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.net.wifi.WifiManager;
 import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.Debug;
 import android.os.Handler;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
@@ -21,6 +25,7 @@ import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.ExpandableListView.OnGroupCollapseListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Button;
 import android.view.View.OnClickListener;
@@ -30,18 +35,17 @@ import android.content.ActivityNotFoundException;
 
 public class MainActivity extends Activity {
 
-    ExpandableListAdapter listAdapter;
+    ListView listView;
     ExpandableListAdapterWithButton listAdaptorButton; //for running apps
-    ExpandableListView expListView;
-    ExpandableListView expListView2; //for running apps
-    List<String> listDataHeader; //for battery level and charge type
-    List<String> listDataHeader2; //for list of running apps
+    ExpandableListView expListView; //for running apps
+    List<String> listDataHeader; //for list of running apps
     HashMap<String, List<String>> listDataChild;
-    HashMap<String, List<String>> listDataChild2; //childlist for running apps
-    private String[] strText = new String[] {"Battery Level", "Status", "Running Apps"};
+    private String[] strList = new String[] {"Battery Level", "Status", "Power Saver (tap for settings)"};
+    private String strExplist = "Running Apps";
     private String[] RunningApps = new String[5];
     private int Voltage = 0;
     private double Power = 0;
+    private int level = -1;
     private boolean trun = true;
     private Handler myHandler = new Handler();
     private Runnable myRun = new Runnable() {
@@ -50,38 +54,77 @@ public class MainActivity extends Activity {
         }
     };
     String[] processNames;
+    private ResponseReceiver receiver; //response receiver for background service (IntentService)
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // preparing list data
         initializeListData();
         startMonitor();
     }
 
+    private void checkPowerSetting(){
+        SharedPreferences s =
+        String myThresh = PowerSaver.mSettings.getString("thresh","missing");
+        if(PowerSaver.thresh != null) {
+            if (level < Integer.parseInt(PowerSaver.thresh)) {
+                WifiManager wifiManager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
+                wifiManager.setWifiEnabled(true);
+            }
+        }
+
+    }
+
     private void initializeListData(){
         setContentView(R.layout.activity_main);
+
         // get the listview
+        listView = (ListView) findViewById(R.id.mylist);
+        ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.listview, strList);
+        listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+
+                // ListView Clicked item index
+                int itemPosition     = position;
+
+                if (itemPosition == 2){ //if "power saver" was tapped on, open the powersaver activity
+                    Intent intent = new Intent(MainActivity.this, PowerSaver.class);
+                    startActivity(intent);
+                }
+
+                // ListView Clicked item value
+                String  itemValue    = (String) listView.getItemAtPosition(position);
+
+                // Show Alert
+                Toast.makeText(getApplicationContext(),
+                        "Position :"+itemPosition+"  ListItem : " +itemValue , Toast.LENGTH_LONG)
+                        .show();
+
+            }
+
+        });
+
+        checkPowerSetting();
         checkRunningApps(); // get list of running apps
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
-        expListView2 = (ExpandableListView) findViewById(R.id.lvExp2);
-        //killButton = (Button) findViewById(R.id.btn_kill);
 
         listDataHeader = new ArrayList<String>();
-        listDataHeader2 = new ArrayList<String>();
         listDataChild = new HashMap<String, List<String>>();
-        listDataChild2 = new HashMap<String, List<String>>();
-        // Adding child data
-        listDataHeader.add(strText[0]);
-        listDataHeader.add(strText[1]);
-        listDataHeader2.add(strText[2]);
 
-        listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
-        listAdaptorButton = new ExpandableListAdapterWithButton(this, listDataHeader2, listDataChild2);
+        // Adding child data
+        listDataHeader.add(strExplist);
+
+        listAdaptorButton = new ExpandableListAdapterWithButton(this, listDataHeader, listDataChild);
 
         // setting list adapter
-        expListView.setAdapter(listAdapter);
-        expListView2.setAdapter(listAdaptorButton);
+         expListView.setAdapter(listAdaptorButton);
 
         // Listview Group click listener
         expListView.setOnGroupClickListener(new OnGroupClickListener() {
@@ -96,17 +139,6 @@ public class MainActivity extends Activity {
             }
         });
 
-        expListView2.setOnGroupClickListener(new OnGroupClickListener() {
-
-            @Override
-            public boolean onGroupClick(ExpandableListView parent, View v,
-                                        int groupPosition, long id) {
-                // Toast.makeText(getApplicationContext(),
-                // "Group Clicked " + listDataHeader.get(groupPosition),
-                // Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        });
 
         // Listview Group expanded listener
         expListView.setOnGroupExpandListener(new OnGroupExpandListener() {
@@ -118,15 +150,6 @@ public class MainActivity extends Activity {
                         Toast.LENGTH_SHORT).show();
             }
         });
-        expListView2.setOnGroupExpandListener(new OnGroupExpandListener() {
-
-            @Override
-            public void onGroupExpand(int groupPosition) {
-                Toast.makeText(getApplicationContext(),
-                        listDataHeader2.get(groupPosition) + " Expanded",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
 
         // Listview Group collasped listener
         expListView.setOnGroupCollapseListener(new OnGroupCollapseListener() {
@@ -135,16 +158,6 @@ public class MainActivity extends Activity {
             public void onGroupCollapse(int groupPosition) {
                 Toast.makeText(getApplicationContext(),
                         listDataHeader.get(groupPosition) + " Collapsed",
-                        Toast.LENGTH_SHORT).show();
-
-            }
-        });
-        expListView2.setOnGroupCollapseListener(new OnGroupCollapseListener() {
-
-            @Override
-            public void onGroupCollapse(int groupPosition) {
-                Toast.makeText(getApplicationContext(),
-                        listDataHeader2.get(groupPosition) + " Collapsed",
                         Toast.LENGTH_SHORT).show();
 
             }
@@ -168,23 +181,7 @@ public class MainActivity extends Activity {
                 return false;
             }
         });
-        expListView2.setOnChildClickListener(new OnChildClickListener() {
 
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v,
-                                        int groupPosition, int childPosition, long id) {
-                // TODO Auto-generated method stub
-                Toast.makeText(
-                        getApplicationContext(),
-                        listDataHeader2.get(groupPosition)
-                                + " : "
-                                + listDataChild2.get(
-                                listDataHeader2.get(groupPosition)).get(
-                                childPosition), Toast.LENGTH_SHORT)
-                        .show();
-                return false;
-            }
-        });
     }
 
     /*
@@ -192,10 +189,7 @@ public class MainActivity extends Activity {
      */
     private void updateListData() {
         listDataHeader.clear();
-        listDataHeader2.clear();
-        listDataHeader.add(strText[0]);
-        listDataHeader.add(strText[1]);
-        listDataHeader2.add(strText[2]);
+        listDataHeader.add(strExplist);
 
         List<String> runningAppsList = new ArrayList<String>();
         runningAppsList.add(RunningApps[0]);
@@ -204,9 +198,9 @@ public class MainActivity extends Activity {
         runningAppsList.add(RunningApps[3]);
         runningAppsList.add(RunningApps[4]);
 
-        listDataChild2.put(listDataHeader2.get(0), runningAppsList);
+        listDataChild.put(listDataHeader.get(0), runningAppsList);
 
-        listAdapter.notifyDataSetChanged();
+        listAdaptorButton.notifyDataSetChanged();
 
         // Listview Group click listener
         expListView.setOnGroupClickListener(new OnGroupClickListener() {
@@ -288,7 +282,6 @@ public class MainActivity extends Activity {
                 context.unregisterReceiver(this);
                 int rawlevel = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
                 int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-                int level = -1;
                 if (rawlevel >= 0 && scale > 0) {
                     level = (rawlevel * 100) / scale;
                 }
@@ -310,9 +303,8 @@ public class MainActivity extends Activity {
                 else
                     strStatus = "Battery Discharging";
 
-                strText[0] = "Battery Level: " + Integer.toString(level) + "%";
-                //strText[1] = "Power consumption: " + Double.toString(Power) + "W";
-                strText[1] = strStatus;
+                strList[0] = "Battery Level: " + Integer.toString(level) + "%";
+                strList[1] = strStatus;
             }
         };
         IntentFilter batteryLevelFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
@@ -368,7 +360,7 @@ public class MainActivity extends Activity {
     //launch application info when "info" button is clicked
     public void launchAppInfo(View view) {
 
-        final int position = expListView2.getPositionForView((View) view.getParent());
+        final int position = expListView.getPositionForView((View) view.getParent()); //get the position of the listview (row) that was selected
         String packageName = processNames[position-1];
         try {
             //Open the specific App Info page:
@@ -386,6 +378,37 @@ public class MainActivity extends Activity {
         }
 
     }
+    public class ResponseReceiver extends BroadcastReceiver {
 
+        public static final String LOCAL_ACTION =
+                "com.example.myintentserviceapp.intent_service.ALL_DONE";
 
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IntentFilter broadcastFilter = new IntentFilter(
+                ResponseReceiver.LOCAL_ACTION);
+        receiver = new ResponseReceiver();
+        LocalBroadcastManager localBroadcastManager =
+                LocalBroadcastManager.getInstance(this);
+        localBroadcastManager.registerReceiver(receiver,
+                broadcastFilter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LocalBroadcastManager localBroadcastManager =
+                LocalBroadcastManager.getInstance(this);
+        localBroadcastManager.unregisterReceiver(receiver);
+    }
 }
+
+
+

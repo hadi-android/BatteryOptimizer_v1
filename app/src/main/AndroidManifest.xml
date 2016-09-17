@@ -3,9 +3,8 @@
     package="com.htappsource.batteryoptimizer"
     android:versionCode="1"
     android:versionName="1.0">
-
-    <uses-permission
-        android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -24,6 +23,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".PowerSaver">
+            <intent-filter>
+                <action android:name="com.htappsource.batteryoptimizer.PowerSaver" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <service android:name=".MyIntentService"/>
     </application>
 
 </manifest>

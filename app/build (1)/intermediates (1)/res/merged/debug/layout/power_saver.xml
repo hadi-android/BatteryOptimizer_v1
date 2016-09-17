@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#000000">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/part1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:background="#000000">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/powersaver_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="#000000">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center_vertical"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:gravity="left|center_vertical"
+                android:singleLine="false"
+                android:text="Min battery level trigger: "
+                android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
+                android:textSize="17dp"
+                android:textStyle="bold"
+                android:textColor="#f9f93d"
+                android:id="@+id/textView"/>
+
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_thresh"
+                android:textStyle="bold"
+                android:text="10%"
+                android:layout_below="@+id/textView"/>
+
+            <!--
+            <View
+                android:layout_below="@id/btn_thresh"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#000000" />
+                -->
+
+        </LinearLayout>
+
+    </RelativeLayout>
+    <View
+        android:paddingLeft="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#FFFFFF" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="7"
+        android:background="#000000"
+        android:id="@+id/part2"
+        android:layout_below="@id/part1">
+
+        <LinearLayout
+            android:paddingLeft="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#000000">
+
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Disable WIFI"
+                android:textColor="#f9f93d"
+                android:textSize="17dp"
+                android:textStyle="bold"
+                android:singleLine="true"
+                android:id="@+id/chk_wifi"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#FFFFFF" />
+
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Disable Blutooth"
+                android:textColor="#f9f93d"
+                android:textSize="17dp"
+                android:textStyle="bold"
+                android:id="@+id/chk_blutooth"
+                android:singleLine="true"
+                android:layout_below="@id/chk_wifi" />
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>
+
+
+
