@@ -3,8 +3,11 @@ import android.app.ListActivity;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +18,7 @@ import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.Debug;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
 import android.widget.AdapterView;
@@ -66,15 +70,25 @@ public class MainActivity extends Activity {
     }
 
     private void checkPowerSetting(){
-        SharedPreferences s =
-        String myThresh = PowerSaver.mSettings.getString("thresh","missing");
-        if(PowerSaver.thresh != null) {
-            if (level < Integer.parseInt(PowerSaver.thresh)) {
-                WifiManager wifiManager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String  thresh = sharedPreferences.getString("thresh",null);
+        Boolean wifi = sharedPreferences.getBoolean("wifi",false);
+        Boolean bt = sharedPreferences.getBoolean("bt",false);
+        WifiManager wifiManager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
+        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+        if(level != -1 && thresh != null) {
+            if (level < Integer.parseInt(thresh)) {
+                wifiManager.setWifiEnabled(!wifi);
+                if(bt==true) {
+                    mBluetoothAdapter.disable();
+                }
+            }
+            else {
                 wifiManager.setWifiEnabled(true);
+                mBluetoothAdapter.enable();
             }
         }
-
     }
 
     private void initializeListData(){
@@ -110,8 +124,19 @@ public class MainActivity extends Activity {
             }
 
         });
-
-        checkPowerSetting();
+        /*try {
+            // thread to sleep for 1000 milliseconds
+            Thread.sleep(1000);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        batteryLevelUpdate();
+        try {
+            // thread to sleep for 1000 milliseconds
+            Thread.sleep(1000);
+        } catch (Exception e) {
+            System.out.println(e);
+        } */
         checkRunningApps(); // get list of running apps
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
 
@@ -261,6 +286,12 @@ public class MainActivity extends Activity {
         public void run () {
             do {
                 batteryLevelUpdate();
+                try {
+                    checkPowerSetting();
+                } catch (Exception e)
+                {
+                    System.out.println("error");
+                }
                 myHandler.post(myRun);
 
                 try {

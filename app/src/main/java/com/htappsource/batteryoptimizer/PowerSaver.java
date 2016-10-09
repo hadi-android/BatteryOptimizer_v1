@@ -18,25 +18,25 @@ import android.widget.PopupMenu;
  */
 
 public class PowerSaver extends Activity   {
-    public static SharedPreferences mSettings;
+    SharedPreferences mSettings;
     public static boolean wifi;
     public static boolean bt;
     public static String thresh;
 
-    private void SavePreferences(String key, String value){
+    /*private void SavePreferences(String key, String value){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(key, value);
         editor.commit();
-    }
+    }*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setContentView(R.layout.power_saver);
         //instantiate sharedprefs object for storing user prefs in this activitity
-        mSettings = PowerSaver.this.getSharedPreferences("Settings", 0);
+        mSettings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         final SharedPreferences.Editor editor = mSettings.edit();
         //declare buttons and checkboxes
         final Button btn_thresh = (Button) findViewById(R.id.btn_thresh);
@@ -57,18 +57,16 @@ public class PowerSaver extends Activity   {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 editor.putBoolean("wifi",isChecked);
-                editor.apply();
+                editor.commit();
             }
         });
         chk_bt.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 editor.putBoolean("bt",isChecked);
-                editor.apply();
+                editor.commit();
             }
         });
-
-
 
 
         btn_thresh.setOnClickListener(new OnClickListener() {
@@ -85,7 +83,7 @@ public class PowerSaver extends Activity   {
                         CharSequence thresh_ch = item.getTitle();
                         btn_thresh.setText(thresh_ch);
                         editor.putString("thresh",thresh_ch.toString());
-                        editor.apply();
+                        editor.commit();
                         return true;
                     }
                 });

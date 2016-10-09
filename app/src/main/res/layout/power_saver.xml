@@ -29,7 +29,7 @@
                 android:ellipsize="end"
                 android:gravity="left|center_vertical"
                 android:singleLine="false"
-                android:text="Min battery level trigger: "
+                android:text="Min battery level trigger (%): "
                 android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
                 android:textSize="17dp"
                 android:textStyle="bold"
