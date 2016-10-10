@@ -66,7 +66,9 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initializeListData();
-        startMonitor();
+        Intent intent_service = new Intent(this, BatteryMonitor.class);
+        startService(intent_service);
+        //startMonitor();
     }
 
     private void checkPowerSetting(){
@@ -286,14 +288,9 @@ public class MainActivity extends Activity {
         public void run () {
             do {
                 batteryLevelUpdate();
-                try {
-                    checkPowerSetting();
-                } catch (Exception e)
-                {
-                    System.out.println("error");
-                }
-                myHandler.post(myRun);
+                checkPowerSetting();
 
+                myHandler.post(myRun);
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
